@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FlexiLoan Calculator | Customizable Loan Solution</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-calculator"></i> FlexiLoan Calculator</h1>
+            <p>Customizable loan calculator that adapts to your preferences with complete amortization schedule</p>
+        </header>
+        
+        <div class="calculator-container">
+            <div class="input-section">
+                <div class="card">
+                    <h2 class="card-title"><i class="fas fa-sliders-h"></i> Calculation Preferences</h2>
+                    
+                    <div class="preferences-grid">
+                        <div class="preference-card active" data-preference="standard">
+                            <i class="fas fa-home"></i>
+                            <h3>Standard Loan</h3>
+                            <p>Calculate based on amount, term and interest</p>
+                        </div>
+                        <div class="preference-card" data-preference="affordability">
+                            <i class="fas fa-wallet"></i>
+                            <h3>Affordability</h3>
+                            <p>Determine loan amount based on budget</p>
+                        </div>
+                        <div class="preference-card" data-preference="term">
+                            <i class="fas fa-calendar-alt"></i>
+                            <h3>Term Planning</h3>
+                            <p>Calculate term based on payment amount</p>
+                        </div>
+                        <div class="preference-card" data-preference="refinance">
+                            <i class="fas fa-sync-alt"></i>
+                            <h3>Refinance</h3>
+                            <p>Compare current loan with refinance options</p>
+                        </div>
+                    </div>
+                    
+                    <div id="standardInputs">
+                        <div class="input-group">
+                            <label for="loanAmount">
+                                <i class="fas fa-dollar-sign"></i> Loan Amount ($)
+                                <span class="preference-indicator">1</span>
+                            </label>
+                            <div class="input-with-icon">
+                                <i class="fas fa-home"></i>
+                                <input type="number" id="loanAmount" min="1000" step="1000" value="250000" placeholder="Enter loan amount">
+                            </div>
+                        </div>
+                        
+                        <div class="input-group">
+                            <label for="loanTerm">
+                                <i class="fas fa-calendar"></i> Loan Term (years)
+                                <span class="preference-indicator">2</span>
+                            </label>
+                            <div class="input-with-icon">
+                                <i class="fas fa-clock"></i>
+                                <input type="number" id="loanTerm" min="1" max="40" value="30" placeholder="Loan term in years">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="affordabilityInputs" style="display: none;">
+                        <div class="input-group">
+                            <label for="monthlyBudget">
+                                <i class="fas fa-wallet"></i> Monthly Budget ($)
+                            </label>
+                            <div class="input-with-icon">
+                                <i class="fas fa-money-bill-wave"></i>
+                                <input type="number" id="monthlyBudget" min="100" step="50" value="1500" placeholder="Max monthly payment">
+                            </div>
+                        </div>
+                        
+                        <div class="input-group">
+                            <label for="affordabilityTerm">
+                                <i class="fas fa-calendar"></i> Desired Term (years)
+                            </label>
+                            <div class="input-with-icon">
+                                <i class="fas fa-hourglass-half"></i>
+                                <input type="number" id="affordabilityTerm" min="1" max="40" value="30" placeholder="Loan term in years">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="termInputs" style="display: none;">
+                        <div class="input-group">
+                            <label for="termLoanAmount">
+                                <i class="fas fa-dollar-sign"></i> Loan Amount ($)
+                            </label>
+                            <div class="input-with-icon">
+                                <i class="fas fa-home"></i>
+                                <input type="number" id="termLoanAmount" min="1000" step="1000" value="250000" placeholder="Enter loan amount">
+                            </div>
+                        </div>
+                        
+                        <div class="input-group">
+                            <label for="desiredPayment">
+                                <i class="fas fa-wallet"></i> Desired Payment ($)
+                            </label>
+                            <div class="input-with-icon">
+                                <i class="fas fa-credit-card"></i>
+                                <input type="number" id="desiredPayment" min="100" step="50" value="1500" placeholder="Desired monthly payment">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="interestRate">
+                            <i class="fas fa-percent"></i> Annual Interest Rate (%)
+                            <span class="preference-indicator">3</span>
+                        </label>
+                        <div class="input-with-icon">
+                            <i class="fas fa-chart-line"></i>
+                            <input type="number" id="interestRate" min="0.1" step="0.1" value="5.5" placeholder="Annual interest rate">
+                        </div>
+                    </div>
+                    
+                    <div class="switch-container">
+                        <span>Fixed Rate</span>
+                        <label class="switch">
+                            <input type="checkbox" id="variableRateToggle">
+                            <span class="slider"></span>
+                        </label>
+                        <span>Variable Rate</span>
+                    </div>
+                    
+                    <div class="variable-rate-section" id="variableRateSection">
+                        <h3><i class="fas fa-chart-line"></i> Variable Interest Rates</h3>
+                        <p>Enter the interest rate for each year of the loan term:</p>
+                        <div class="year-rates" id="yearRatesContainer">
+                            <!-- Dynamically generated -->
+                        </div>
+                    </div>
+                    
+                    <button id="calculateBtn">
+                        <i class="fas fa-calculator"></i> Calculate Loan
+                    </button>
+                </div>
+                
+                <div class="card">
+                    <h2 class="card-title"><i class="fas fa-info-circle"></i> How to Use</h2>
+                    <ul style="padding-left: 22px; line-height: 1.8; font-size: 1.05rem;">
+                        <li><strong>Choose your calculation preference</strong> based on your financial goals</li>
+                        <li><strong>Standard Loan</strong>: Calculate payments based on loan amount, term and interest</li>
+                        <li><strong>Affordability</strong>: Determine how much you can borrow based on your monthly budget</li>
+                        <li><strong>Term Planning</strong>: Calculate how long it will take to pay off based on your payment amount</li>
+                        <li><strong>Refinance</strong>: Compare your current loan with potential refinance options</li>
+                        <li>Switch to <strong>variable rate</strong> to set different rates for each year</li>
+                        <li>View detailed <strong>monthly payment breakdown</strong> in the table</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="results-section">
+                <div class="summary-cards">
+                    <div class="summary-card">
+                        <h3>Monthly Payment</h3>
+                        <div class="value" id="monthlyPayment">$1,419.47</div>
+                        <div class="sub-value">Principal + Interest</div>
+                    </div>
+                    
+                    <div class="summary-card">
+                        <h3>Total Interest</h3>
+                        <div class="value" id="totalInterest">$261,009.20</div>
+                        <div class="sub-value">Over loan term</div>
+                    </div>
+                    
+                    <div class="summary-card">
+                        <h3>Total Payment</h3>
+                        <div class="value" id="totalPayment">$511,009.20</div>
+                        <div class="sub-value">Principal + Interest</div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h2 class="card-title"><i class="fas fa-table"></i> Amortization Schedule</h2>
+                    
+                    <div class="table-container">
+                        <table id="amortizationTable">
+                            <thead>
+                                <tr>
+                                    <th>Month</th>
+                                    <th>Payment</th>
+                                    <th>Principal</th>
+                                    <th>Interest</th>
+                                    <th>Total Interest</th>
+                                    <th>Balance</th>
+                                </tr>
+                            </thead>
+                            <tbody id="scheduleBody">
+                                <!-- Table rows will be generated here -->
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div class="pagination" id="paginationContainer">
+                        <!-- Pagination buttons will be generated here -->
+                    </div>
+                    
+                    <button class="export-btn" id="exportBtn">
+                        <i class="fas fa-download"></i> Export to CSV
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+   <script src="main.js"></script>
+</body>
+</html>
